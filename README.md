@@ -19,6 +19,10 @@
   * 'MongoDB'
     * <code>gem install mongoid</code> or <code>bundle install</code> *inside the app folder* 
 
+### DataBase configuration
+#### <code>./app/config/locales/mongoid.yml::line:7</code>
+#### In that line goes the Uri of your database in order to connect database MongoDb
+
 ## Endpoints
 
 ### Post
