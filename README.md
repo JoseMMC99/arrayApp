@@ -1,5 +1,25 @@
 # README
 
+## App
+### Rest Api on Ruby
+* Create an array, this endpoint must receive only a parameter that will be the number of elements that will have the array
+  * The array elements must be integers between 0 and 30
+  * The minimun amount of elements must be 10
+  * Elements can't repeat
+* Write a function that takes in an array of integers and returns an array of length 2 representing
+the largest range of numbers contained in that array. The first number in the output array should
+be the first number in the range while the second number should be the last number in the range.
+A range of numbers is defined as a set of numbers that come right after each other in the set of
+real integers. For instance, the output array [2, 6] represents the range {2, 3, 4, 5, 6}, which is a
+range of length 5. Note that numbers do not need to be ordered or adjacent in the array in order
+to form a range. Assume that there will only be one largest range.
+
+  * Sample input: <code>[0, 7, 3, 13, 15, 5, 2, 4, 10, 1, 12, 6]</code>
+    * Sample output: <code>[0, 7]</code>
+  
+  * Sample input: <code>[1, 11, 3, 30, 12, 8, 2, 14, 10, 13]</code>
+    * Sample output: <code>[10, 14]</code>
+
 ## Versions and configurations
 
 #### Creating the app:
