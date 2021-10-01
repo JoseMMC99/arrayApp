@@ -84,63 +84,38 @@ class NumberArraysController < ApplicationController
       render json: { Error: "There's no Array with that id"}, status: :not_found
     else    
       arrayDb = NumberArray.find(params[:id])["nums"]
-      arrayDb = arrayDb.sort()
       auxArray = []
 
       i = 0
       count = 1
       max = 0
 
-      while( i < arrayDb.length )
-        j = i + 1
-        aument = arrayDb[i] + 1
-        while(j < arrayDb.length)
+      iterations = 0
+      aument = arrayDb[i] + 1
+      lastNumber = 0
 
-          if(arrayDb[j] == aument)
-            count += 1
-            aument += 1
-          else
-            break
-          end          
+      while( iterations < arrayDb.length )
+        iterations += 1
 
-          j += 1
-
+        if arrayDb.include?(aument)
+          count += 1
+          aument += 1
+          lastNumber = aument
+          iterations -= 1
+        else
+          count = 1
+          aument = arrayDb[i] + 1
+          i += 1
         end
 
-        if max < count
+        if(max < count)
           max = count
-          auxArray[0] = arrayDb[i]
-          auxArray[1] = arrayDb[j-1]
+          auxArray[0] = aument - count
+          auxArray[1] = aument - 1
         end
 
-        count = 1
-        i = j
 
       end
-
-      # auxArray = []
-
-      # maxim = 0    
-
-      # #Roaming the array in order to compare every position in there
-      # arrayDb.length.times do |i|      
-        
-      #   aument = arrayDb[i]
-        
-      #   #while includes the variable @aument will aument that variable, in order to check every sequence on the array
-      #   while arrayDb.include?(aument)        
-      #     aument += 1
-      #     #This if will put in the first and second position, the first and the last number in the sequence
-      #     #until it finds the sequence with the maximum lenght, won't stop rewriting the array, the last array is the correct
-      #     if(maxim < [maxim, aument - arrayDb[i]].max)
-      #       auxArray[0] = arrayDb[i]
-      #       auxArray[1] = aument - 1
-      #     end
-      #     maxim = [maxim, aument - arrayDb[i]].max
-          
-      #   end
-        
-      # end
 
       render json: { LargestSequence: auxArray }, status: :ok
 
