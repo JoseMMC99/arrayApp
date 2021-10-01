@@ -41,66 +41,76 @@ class NumberArraysController < ApplicationController
   end
 
   def createArray
-    # Getting the parameter ["nums"] in order to get the lenght of the array
-    parameters = number_array_params
+    #Checking if there's a @nums key
+    if params.has_key?(:nums)
+      #Checking if the value of the key @nums is an Integer or at least a number
+      if params["nums"].is_a?(Integer) || params["nums"].to_i != 0
 
-    numberArray = []
+        arrayLength = params["nums"].to_i
+        numberArray = []
 
-    if parameters["nums"] < 10
-      render json: "The lenght of the array cannot be less than 10"
-    else
-      parameters["nums"].times do |i|
-        loop do
-          num = rand(0..30)
-          if !numberArray.include?(num)
-            numberArray.push(num)
-            break
+        #Checking if the value of the key @nums is less than 10
+        if arrayLength < 10
+          render json: { Error: "The lenght of the array cannot be less than 10" }, status: :unprocessable_entity
+        else
+          arrayLength.times do |i|
+            loop do
+              num = rand(0..30)
+              if !numberArray.include?(num)
+                numberArray.push(num)
+                break
+              end
+            end
+          end
+          newArray = NumberArray.new({"nums":numberArray})
+
+          if newArray.save
+            render json: newArray
+          else
+            render json: { Error: "Something went wrong while saving the Array" }, status: :unprocessable_entity
           end
         end
-      end
-      puts numberArray
-      newArray = NumberArray.new({"nums":numberArray})
-
-      if newArray.save
-        render json: newArray
       else
-        render json: newArray.errors, status: :unprocessable_entity
+        render json: { Error: "'nums' must be a number"}, status: :unprocessable_entity
       end
-    end    
+    else
+      render json: { Error: "There is not key 'nums' in the body"}, status: :unprocessable_entity
+    end
   end
 
   def listRange
+    #Checking if the NumberArray with that id exist in the database
     if (NumberArray.find(params[:id])).nil?
-      render json: "There's no Array with that id", status: :not_found
-    end
+      render json: { Error: "There's no Array with that id"}, status: :not_found
+    else    
+      arrayDb = NumberArray.find(params[:id])["nums"]
+      auxArray = []
 
-    arrayDb = NumberArray.find(params[:id])["nums"]
-    auxArray = []
+      maxim = 0    
 
-    maxim = 0    
-
-    arrayDb.length.times do |i|      
-      
-      aument = arrayDb[i]
-
-      while arrayDb.include?(aument)        
-        aument += 1
-        if(maxim < [maxim, aument - arrayDb[i]].max)
-          auxArray[0] = arrayDb[i]
-          auxArray[1] = aument - 1
+      #Roaming the array in order to compare every position in there
+      arrayDb.length.times do |i|      
+        
+        aument = arrayDb[i]
+        
+        #while includes the variable @aument will aument that variable, in order to check every sequence on the array
+        while arrayDb.include?(aument)        
+          aument += 1
+          #This if will put in the first and second position, the first and the last number in the sequence
+          #until it finds the sequence with the maximum lenght, won't stop rewriting the array, the last array is the correct
+          if(maxim < [maxim, aument - arrayDb[i]].max)
+            auxArray[0] = arrayDb[i]
+            auxArray[1] = aument - 1
+          end
+          maxim = [maxim, aument - arrayDb[i]].max
+          
         end
-        maxim = [maxim, aument - arrayDb[i]].max
         
       end
-      
+
+      render json: { LargestSequence: auxArray }, status: :ok
+
     end
-
-    puts "Array secuencia: "
-    puts auxArray
-    puts "Secuencia maxima: " + maxim.to_s
-
-    render json: auxArray
-
   end
 
   private
