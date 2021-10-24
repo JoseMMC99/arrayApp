@@ -91,7 +91,9 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.5-x64-mingw32)
       racc (~> 1.4)
-    puma (5.5.0)
+    nokogiri (1.12.5-x86_64-linux)
+      racc (~> 1.4)
+    puma (5.5.1)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
@@ -144,12 +146,13 @@ GEM
 
 PLATFORMS
   x64-mingw32
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   mongoid
-  puma (~> 5.0)
+  puma (~> 5.5)
   rails (~> 6.1.4, >= 6.1.4.1)
   tzinfo-data
 
